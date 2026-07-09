@@ -1,0 +1,133 @@
+@import 'tailwindcss';
+
+/*
+ * Theme: defer to the shell. We paint with the platform's design tokens
+ * (--gt-*) when they're present (so Hours inherits the user's light/dark and
+ * accent), and fall back to a calm neutral palette when running standalone.
+ * Dark is driven by the `dark` class the shell toggles on <html> — never by
+ * prefers-color-scheme (that's the OS setting, which can disagree with the shell).
+ */
+:root {
+  color-scheme: light dark;
+
+  --bg: var(--gt-bg, #fafaf9);
+  --panel: var(--gt-bg-elev, #ffffff);
+  --sub: var(--gt-bg-sub, #f4f4f2);
+  --fg: var(--gt-fg, #1c1917);
+  --fg2: var(--gt-fg-2, #44403c);
+  --muted: var(--gt-fg-3, #78716c);
+  --faint: var(--gt-fg-4, #a8a29e);
+  --border: var(--gt-border, #e7e5e4);
+  --border-strong: var(--gt-border-strong, #d6d3d1);
+  --hover: var(--gt-bg-sub, #f4f4f2);
+  --accent: var(--gt-accent, #0d9488);
+  --accent-fg: var(--gt-accent-fg, #ffffff);
+  --accent-soft: var(--gt-accent-soft, #ccfbf1);
+}
+
+html.dark {
+  --bg: var(--gt-bg, #17161a);
+  --panel: var(--gt-bg-elev, #201f25);
+  --sub: var(--gt-bg-sub, #26252c);
+  --fg: var(--gt-fg, #f4f4f5);
+  --fg2: var(--gt-fg-2, #d4d4d8);
+  --muted: var(--gt-fg-3, #a1a1aa);
+  --faint: var(--gt-fg-4, #71717a);
+  --border: var(--gt-border, #33323b);
+  --border-strong: var(--gt-border-strong, #45444f);
+  --hover: var(--gt-bg-sub, #26252c);
+  --accent: var(--gt-accent, #2dd4bf);
+  --accent-fg: var(--gt-accent-fg, #052e2b);
+  --accent-soft: var(--gt-accent-soft, #134e4a);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+/* Tabular figures for anything time-shaped, so digits don't jitter as they tick. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* ── tag chips ─────────────────────────────────────────────────────────────── */
+.tag {
+  --tc: #78716c;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  line-height: 1;
+  padding: 3px 8px;
+  border-radius: 999px;
+  color: var(--tc);
+  background: color-mix(in srgb, var(--tc) 13%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tc) 25%, transparent);
+  white-space: nowrap;
+}
+html.dark .tag {
+  color: color-mix(in srgb, var(--tc) 55%, white);
+}
+.tag-teal {
+  --tc: #0d9488;
+}
+.tag-blue {
+  --tc: #2563eb;
+}
+.tag-green {
+  --tc: #16a34a;
+}
+.tag-violet {
+  --tc: #7c3aed;
+}
+.tag-rose {
+  --tc: #e11d48;
+}
+.tag-amber {
+  --tc: #d97706;
+}
+.tag-orange {
+  --tc: #ea580c;
+}
+.tag-cyan {
+  --tc: #0891b2;
+}
+
+/* contenteditable / empty placeholder */
+[data-placeholder]:empty::before {
+  content: attr(data-placeholder);
+  color: var(--muted);
+  pointer-events: none;
+}
+
+/* thin scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* native controls follow the theme */
+input,
+textarea,
+select,
+button {
+  font: inherit;
+  color: inherit;
+}
+input[type='datetime-local'],
+input[type='date'],
+input[type='time'] {
+  color-scheme: light dark;
+}

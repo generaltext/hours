@@ -117,37 +117,27 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       if (disposed) return
 
       workspaceRef.current = window.gt.workspaceId || 'local'
-      const actor = await resolveMe()
+
+      // Critical path to `ready` is deliberately tiny: the handshake above, plus
+      // identity and the local IndexedDB cache in parallel. Everything slower
+      // (the config file read, the first fold of the log) happens *after* the UI
+      // is already on screen, so there's no full-screen "loading" stall — the
+      // shell renders immediately and entries stream in.
+      const [actor, cached] = await Promise.all([resolveMe(), loadCache(workspaceRef.current)])
+      if (disposed) return
       meRef.current = actor
       setMe(actor)
-      setConnected(window.gt.connected)
-
-      const cached = await loadCache(workspaceRef.current)
-      if (cached && !disposed) {
+      if (cached) {
         stateRef.current = cached.state
         consumedRef.current = cached.consumed
       }
-
-      // Config: read, or seed the default once.
-      try {
-        const raw = await window.gt.readFile(CONFIG_PATH)
-        if (raw.trim()) setConfig({ ...DEFAULT_CONFIG, ...(JSON.parse(raw) as Config) })
-      } catch {
-        void window.gt.writeFile(CONFIG_PATH, JSON.stringify(DEFAULT_CONFIG, null, 2))
-      }
-      window.gt.watch(CONFIG_PATH, (raw) => {
-        if (raw.trim()) {
-          try {
-            setConfig({ ...DEFAULT_CONFIG, ...(JSON.parse(raw) as Config) })
-          } catch {
-            /* keep last good config */
-          }
-        }
-      })
+      setConnected(window.gt.connected)
+      setReady(true)
+      bump()
 
       // Subscribe every existing log file (entry shards + projects), the current
       // month's shard, and watch for new files (a new month, or projects.jsonl
-      // appearing after the first write).
+      // appearing after the first write). Watches fire into the visible UI.
       subscribeLog(PROJECTS_PATH)
       subscribeLog(currentShardPath())
       for (const p of window.gt.files()) if (isLogPath(p)) subscribeLog(p)
@@ -158,7 +148,26 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       window.gt.on('connected', () => setConnected(true))
       window.gt.on('disconnected', () => setConnected(false))
 
-      setReady(true)
+      // Config: defaults are already in state, so this is off the critical path.
+      // Read once to detect a missing file (write the default), and watch for
+      // live updates.
+      window.gt
+        .readFile(CONFIG_PATH)
+        .then((raw) => {
+          if (raw.trim()) setConfig({ ...DEFAULT_CONFIG, ...(JSON.parse(raw) as Config) })
+        })
+        .catch(() => {
+          void window.gt.writeFile(CONFIG_PATH, JSON.stringify(DEFAULT_CONFIG, null, 2))
+        })
+      window.gt.watch(CONFIG_PATH, (raw) => {
+        if (raw.trim()) {
+          try {
+            setConfig({ ...DEFAULT_CONFIG, ...(JSON.parse(raw) as Config) })
+          } catch {
+            /* keep last good config */
+          }
+        }
+      })
 
       // Seed sample content once, only when truly empty: in the gallery "try it
       // live" demo (mode 'demo') and in the standalone deployed demo (__hoursDemo).
@@ -208,6 +217,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     // the runtime's diff is a pure end-insertion (never a delete of a concurrent
     // remote line).
     const run = writeQueue.current.then(async () => {
+      await window.gt.ready // a click before the handshake still lands safely
       for (const [path, evs] of byPath) {
         const exists = window.gt.files().includes(path)
         const base = exists ? await window.gt.readFile(path) : ''

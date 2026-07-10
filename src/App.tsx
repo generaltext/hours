@@ -92,20 +92,10 @@ function Nav() {
   )
 }
 
-function BootSplash() {
-  return (
-    <div className="flex h-full items-center justify-center">
-      <div className="flex flex-col items-center gap-3" style={{ color: 'var(--muted)' }}>
-        <Mark />
-        <span className="text-sm">Loading Hours…</span>
-      </div>
-    </div>
-  )
-}
-
 export function App() {
-  const { ready } = useStore()
-  if (!ready) return <BootSplash />
+  // No full-screen gate: the shell renders immediately (the platform's own app
+  // splash covers the brief handshake), and entries stream into TrackView as the
+  // store finishes booting — so there's never a second "loading" screen.
   return (
     <div className="min-h-full">
       <Nav />

@@ -1,7 +1,7 @@
 {
   "name": "hours",
   "displayName": "Hours",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "gtApi": "^1.0",
   "blurb": "A clean, append-only time tracker: simple to use, plaintext backed making it easy to audit/report.",
   "color": "teal",

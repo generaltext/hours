@@ -78,7 +78,10 @@ function Running({ entry }: { entry: EntryRecord }) {
   const { dispatch, now } = useStore()
   const [title, setTitle] = useState(entry.title)
 
-  // Reset the local field when this row's entry changes identity.
+  // Reset the local field when this row's entry changes identity. Deliberately NOT
+  // keyed on entry.title: syncing that in would clobber what the user is typing
+  // whenever a collaborator edits the same entry.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => setTitle(entry.title), [entry.id])
 
   function commitTitle() {

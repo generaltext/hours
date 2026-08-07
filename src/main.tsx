@@ -1,5 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import { HashRouter } from 'react-router-dom'
+import { GtLocation } from './lib/gt-location'
 import { StoreProvider } from './lib/store'
 import { App } from './App'
 import { MissingRuntime } from './components/MissingRuntime'
@@ -32,6 +33,9 @@ function loadRuntime(): Promise<void> {
 function bootApp() {
   root.render(
     <HashRouter>
+      {/* Mounted inside the router but outside the app, so a boot deep link is
+          adopted even while the store is still loading. */}
+      <GtLocation />
       <StoreProvider>
         <App />
       </StoreProvider>

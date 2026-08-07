@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { applyEvent, emptyState, type State } from './reducer'
+
 import { serializeEvent, type HoursEvent } from './events'
 import { foldFrom } from './log'
+import { applyEvent, emptyState, type State } from './reducer'
 
 let seq = 0
 function ev(type: string, subject: string, data?: Record<string, unknown>): HoursEvent {

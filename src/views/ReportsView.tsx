@@ -1,15 +1,9 @@
-import { useState } from 'react'
 import { BarChart3, Download } from 'lucide-react'
-import { useStore } from '../lib/store'
-import { durationMs, entriesList } from '../lib/reducer'
-import {
-  aggregate,
-  entriesInRange,
-  rangeBounds,
-  type PersonSlice,
-  type RangeKey,
-} from '../lib/reports'
-import { ROUNDING_OPTIONS, type RoundingMinutes } from '../lib/model'
+import { useState } from 'react'
+
+import { Avatar, Button, EmptyState, Select } from '../components/common'
+import { ProjectChip, NoProject } from '../components/ProjectChip'
+import { TagChip } from '../components/TagEditor'
 import {
   csvRows,
   downloadText,
@@ -19,9 +13,16 @@ import {
   fmtTime,
   roundMs,
 } from '../lib/format'
-import { Avatar, Button, EmptyState, Select } from '../components/common'
-import { ProjectChip, NoProject } from '../components/ProjectChip'
-import { TagChip } from '../components/TagEditor'
+import { ROUNDING_OPTIONS, type RoundingMinutes } from '../lib/model'
+import { durationMs, entriesList } from '../lib/reducer'
+import {
+  aggregate,
+  entriesInRange,
+  rangeBounds,
+  type PersonSlice,
+  type RangeKey,
+} from '../lib/reports'
+import { useStore } from '../lib/store'
 
 type GroupBy = 'project' | 'person' | 'tag'
 
@@ -161,7 +162,11 @@ export function ReportsView() {
       </div>
 
       {agg.total === 0 ? (
-        <EmptyState icon={BarChart3} title="Nothing tracked in this range" hint="Pick a wider range or track some time." />
+        <EmptyState
+          icon={BarChart3}
+          title="Nothing tracked in this range"
+          hint="Pick a wider range or track some time."
+        />
       ) : (
         <div
           className="flex flex-col gap-1 rounded-xl p-2"
@@ -253,13 +258,23 @@ function BarRow({
         <div className="min-w-0 flex-1 text-sm">{label}</div>
         <span className="tnum shrink-0 text-sm font-semibold tabular-nums">{fmtDuration(ms)}</span>
       </div>
-      <div className="mt-1.5 h-1.5 overflow-hidden rounded-full" style={{ background: 'var(--hover)' }}>
-        <div className="h-full rounded-full" style={{ width: `${pct}%`, background: 'var(--accent)' }} />
+      <div
+        className="mt-1.5 h-1.5 overflow-hidden rounded-full"
+        style={{ background: 'var(--hover)' }}
+      >
+        <div
+          className="h-full rounded-full"
+          style={{ width: `${pct}%`, background: 'var(--accent)' }}
+        />
       </div>
       {people && (
         <div className="mt-2 flex flex-col gap-1 pl-1">
           {people.map((p) => (
-            <div key={p.id} className="flex items-center justify-between text-xs" style={{ color: 'var(--muted)' }}>
+            <div
+              key={p.id}
+              className="flex items-center justify-between text-xs"
+              style={{ color: 'var(--muted)' }}
+            >
               <span className="inline-flex items-center gap-1.5">
                 <Avatar actor={{ id: p.id, name: p.name }} size={16} />
                 {p.name}

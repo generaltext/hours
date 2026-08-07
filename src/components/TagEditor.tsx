@@ -1,8 +1,9 @@
-import { useState } from 'react'
 import { X } from 'lucide-react'
-import { useStore } from '../lib/store'
-import { allTags } from '../lib/reducer'
+import { useState } from 'react'
+
 import { tagColor } from '../lib/model'
+import { allTags } from '../lib/reducer'
+import { useStore } from '../lib/store'
 
 export function TagChip({ label, onRemove }: { label: string; onRemove?: () => void }) {
   const { config } = useStore()
@@ -34,7 +35,13 @@ export function TagList({ tags }: { tags: string[] }) {
   )
 }
 
-export function TagEditor({ tags, onChange }: { tags: string[]; onChange: (tags: string[]) => void }) {
+export function TagEditor({
+  tags,
+  onChange,
+}: {
+  tags: string[]
+  onChange: (tags: string[]) => void
+}) {
   const { state, version } = useStore()
   const [draft, setDraft] = useState('')
   void version

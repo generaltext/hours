@@ -1,15 +1,22 @@
-import { useState } from 'react'
 import { Archive, ChevronDown, ChevronRight, Pencil, Play, Square } from 'lucide-react'
-import { useStore } from '../lib/store'
-import { durationMs, isRunning, type EntryRecord } from '../lib/reducer'
+import { useState } from 'react'
+
 import { archiveEntry, newEntryId, startEntry, stopEntry } from '../lib/actions'
 import { fmtClock, fmtDuration, fmtTimeRange } from '../lib/format'
 import { Markdown } from '../lib/markdown'
+import { durationMs, isRunning, type EntryRecord } from '../lib/reducer'
+import { useStore } from '../lib/store'
 import { Avatar, IconButton } from './common'
 import { ProjectChip, NoProject } from './ProjectChip'
 import { TagList } from './TagEditor'
 
-export function EntryRow({ entry, onEdit }: { entry: EntryRecord; onEdit: (e: EntryRecord) => void }) {
+export function EntryRow({
+  entry,
+  onEdit,
+}: {
+  entry: EntryRecord
+  onEdit: (e: EntryRecord) => void
+}) {
   const { state, dispatch, now } = useStore()
   const [expanded, setExpanded] = useState(false)
   const running = isRunning(entry)
@@ -33,7 +40,9 @@ export function EntryRow({ entry, onEdit }: { entry: EntryRecord; onEdit: (e: En
   return (
     <div
       className="group rounded-lg transition-colors hover:bg-[var(--hover)]"
-      style={running ? { background: 'color-mix(in srgb, var(--accent) 7%, transparent)' } : undefined}
+      style={
+        running ? { background: 'color-mix(in srgb, var(--accent) 7%, transparent)' } : undefined
+      }
     >
       <div className="flex items-center gap-3 px-3 py-2.5">
         <div className="min-w-0 flex-1">
@@ -44,7 +53,10 @@ export function EntryRow({ entry, onEdit }: { entry: EntryRecord; onEdit: (e: En
                   className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60"
                   style={{ background: 'var(--accent)' }}
                 />
-                <span className="inline-flex h-2 w-2 rounded-full" style={{ background: 'var(--accent)' }} />
+                <span
+                  className="inline-flex h-2 w-2 rounded-full"
+                  style={{ background: 'var(--accent)' }}
+                />
               </span>
             )}
             <span className="truncate text-[15px]">
@@ -91,19 +103,32 @@ export function EntryRow({ entry, onEdit }: { entry: EntryRecord; onEdit: (e: En
 
         <div className="flex shrink-0 items-center gap-0.5 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
           {running ? (
-            <IconButton icon={Square} title="Stop" onClick={() => void dispatch(stopEntry(entry.id))} />
+            <IconButton
+              icon={Square}
+              title="Stop"
+              onClick={() => void dispatch(stopEntry(entry.id))}
+            />
           ) : (
             <IconButton icon={Play} title="Resume" onClick={resume} />
           )}
           <IconButton icon={Pencil} title="Edit" onClick={() => onEdit(entry)} />
-          <IconButton icon={Archive} title="Archive" onClick={() => void dispatch(archiveEntry(entry.id))} />
+          <IconButton
+            icon={Archive}
+            title="Archive"
+            onClick={() => void dispatch(archiveEntry(entry.id))}
+          />
         </div>
       </div>
 
       {expanded && hasNotes && (
         <div
           className="mx-3 mb-2.5 rounded-md px-3 py-2"
-          style={{ background: 'var(--bg)', borderWidth: 1, borderColor: 'var(--border)', color: 'var(--fg2)' }}
+          style={{
+            background: 'var(--bg)',
+            borderWidth: 1,
+            borderColor: 'var(--border)',
+            color: 'var(--fg2)',
+          }}
         >
           <Markdown source={entry.description} />
         </div>

@@ -63,7 +63,14 @@ function asStringOrNull(v: unknown): string | null {
 
 function asTags(v: unknown): string[] {
   if (!Array.isArray(v)) return []
-  return [...new Set(v.filter((t): t is string => typeof t === 'string').map((t) => t.trim()).filter(Boolean))]
+  return [
+    ...new Set(
+      v
+        .filter((t): t is string => typeof t === 'string')
+        .map((t) => t.trim())
+        .filter(Boolean),
+    ),
+  ]
 }
 
 export function applyEvent(state: State, ev: HoursEvent): void {
@@ -87,7 +94,12 @@ function touch(rec: EntryRecord | ProjectRecord, ev: HoursEvent): void {
   rec.updatedBy = ev.actor
 }
 
-function applyEntry(state: State, ev: HoursEvent, verb: string, data: Record<string, unknown>): void {
+function applyEntry(
+  state: State,
+  ev: HoursEvent,
+  verb: string,
+  data: Record<string, unknown>,
+): void {
   if (verb === 'start' || verb === 'log') {
     if (state.entries[ev.subject]) return
     const startedAt = asString(data.startedAt) || ev.ts
@@ -132,7 +144,12 @@ function applyEntry(state: State, ev: HoursEvent, verb: string, data: Record<str
   }
 }
 
-function applyProject(state: State, ev: HoursEvent, verb: string, data: Record<string, unknown>): void {
+function applyProject(
+  state: State,
+  ev: HoursEvent,
+  verb: string,
+  data: Record<string, unknown>,
+): void {
   if (verb === 'create') {
     if (state.projects[ev.subject]) return
     state.projects[ev.subject] = {
@@ -184,7 +201,9 @@ export function isRunning(entry: EntryRecord): boolean {
 export function entriesList(state: State): EntryRecord[] {
   return Object.values(state.entries)
     .filter((e) => !e.archived)
-    .sort((a, b) => (a.startedAt < b.startedAt ? 1 : a.startedAt > b.startedAt ? -1 : a.id < b.id ? 1 : -1))
+    .sort((a, b) =>
+      a.startedAt < b.startedAt ? 1 : a.startedAt > b.startedAt ? -1 : a.id < b.id ? 1 : -1,
+    )
 }
 
 export function runningEntries(state: State): EntryRecord[] {

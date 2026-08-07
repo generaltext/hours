@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { useStore } from '../lib/store'
-import type { EntryRecord } from '../lib/reducer'
+
 import { editEntry, logEntry, newEntryId } from '../lib/actions'
 import { fmtDuration, fromLocalInput, toLocalInput } from '../lib/format'
+import type { EntryRecord } from '../lib/reducer'
+import { useStore } from '../lib/store'
 import { Button, Field, Modal, TextInput } from './common'
 import { ProjectPicker } from './ProjectPicker'
 import { TagEditor } from './TagEditor'
@@ -20,7 +21,9 @@ export function EntryEditor({ entry, onClose }: { entry?: EntryRecord; onClose: 
   const running = editing && entry.endedAt === null
 
   const [start, setStart] = useState(entry ? toLocalInput(entry.startedAt) : defaultStart())
-  const [end, setEnd] = useState(entry?.endedAt ? toLocalInput(entry.endedAt) : editing ? '' : defaultEnd())
+  const [end, setEnd] = useState(
+    entry?.endedAt ? toLocalInput(entry.endedAt) : editing ? '' : defaultEnd(),
+  )
   const [projectId, setProjectId] = useState<string | null>(entry?.projectId ?? null)
   const [title, setTitle] = useState(entry?.title ?? '')
   const [description, setDescription] = useState(entry?.description ?? '')
@@ -96,14 +99,21 @@ export function EntryEditor({ entry, onClose }: { entry?: EntryRecord; onClose: 
 
         <div className="grid grid-cols-2 gap-3">
           <Field label="Start">
-            <TextInput type="datetime-local" value={start} onChange={(e) => setStart(e.target.value)} />
+            <TextInput
+              type="datetime-local"
+              value={start}
+              onChange={(e) => setStart(e.target.value)}
+            />
           </Field>
           <Field label={running ? 'End (leave blank to keep running)' : 'End'}>
             <TextInput type="datetime-local" value={end} onChange={(e) => setEnd(e.target.value)} />
           </Field>
         </div>
 
-        <div className="flex items-center justify-between text-xs" style={{ color: 'var(--muted)' }}>
+        <div
+          className="flex items-center justify-between text-xs"
+          style={{ color: 'var(--muted)' }}
+        >
           <span>
             {endBeforeStart
               ? 'End is before start.'
@@ -127,7 +137,7 @@ export function EntryEditor({ entry, onClose }: { entry?: EntryRecord; onClose: 
             onChange={(e) => setDescription(e.target.value)}
             rows={4}
             placeholder="Longer notes — supports **bold**, lists, links…"
-            className="w-full resize-y rounded-md px-2.5 py-1.5 text-sm outline-none transition-colors focus:border-[var(--accent)]"
+            className="w-full resize-y rounded-md px-2.5 py-1.5 text-sm transition-colors outline-none focus:border-[var(--accent)]"
             style={{ borderWidth: 1, borderColor: 'var(--border)', background: 'var(--bg)' }}
           />
         </Field>

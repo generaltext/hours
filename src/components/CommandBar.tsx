@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { BarChart3, FolderOpen, Play, Clock, Square } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { useStore } from '../lib/store'
-import { myRunningEntries, projectsList } from '../lib/reducer'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import { newEntryId, startEntry, stopEntry } from '../lib/actions'
+import { myRunningEntries, projectsList } from '../lib/reducer'
+import { useStore } from '../lib/store'
 import { ProjectChip } from './ProjectChip'
 
 interface Command {
@@ -55,7 +56,8 @@ export function CommandBar() {
       run: () => void dispatch(startEntry(newEntryId(), {})),
     })
     for (const r of running) {
-      const label = r.title || (r.projectId ? (state.projects[r.projectId]?.name ?? 'timer') : 'timer')
+      const label =
+        r.title || (r.projectId ? (state.projects[r.projectId]?.name ?? 'timer') : 'timer')
       list.push({
         id: `stop-${r.id}`,
         label: `Stop: ${label}`,
@@ -73,8 +75,18 @@ export function CommandBar() {
     }
     list.push(
       { id: 'go-track', label: 'Go to Track', icon: Clock, run: () => navigate('/') },
-      { id: 'go-reports', label: 'Go to Reports', icon: BarChart3, run: () => navigate('/reports') },
-      { id: 'go-projects', label: 'Go to Projects', icon: FolderOpen, run: () => navigate('/projects') },
+      {
+        id: 'go-reports',
+        label: 'Go to Reports',
+        icon: BarChart3,
+        run: () => navigate('/reports'),
+      },
+      {
+        id: 'go-projects',
+        label: 'Go to Projects',
+        icon: FolderOpen,
+        run: () => navigate('/projects'),
+      },
     )
     for (const p of projectsList(state)) {
       list.push({

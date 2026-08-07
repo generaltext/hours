@@ -1,8 +1,8 @@
 // Sample content for the gallery "Try it live" demo, so it opens full instead of
 // empty. Only ever runs in demo mode against a throwaway workspace (see store).
 
-import type { Draft } from './events'
 import { createProject, logEntry, newEntryId, newProjectId, startEntry } from './actions'
+import type { Draft } from './events'
 
 /** ISO for `daysAgo` at local `hour:minute`. */
 function at(daysAgo: number, hour: number, minute = 0): string {

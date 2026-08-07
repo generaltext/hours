@@ -1,6 +1,6 @@
-import { defineConfig, type Plugin } from 'vite'
-import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import react from '@vitejs/plugin-react'
+import { defineConfig, type Plugin } from 'vite'
 
 // Dev-only: inject window.gt so the app runs standalone against a local
 // in-browser workspace (IndexedDB + cross-tab sync over BroadcastChannel).

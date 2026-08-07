@@ -38,7 +38,10 @@ export function stopEntry(id: string, endedAt?: string): Draft {
 }
 
 /** A complete entry in one line (manual / retroactive). */
-export function logEntry(id: string, fields: EntryFields & { startedAt: string; endedAt: string }): Draft {
+export function logEntry(
+  id: string,
+  fields: EntryFields & { startedAt: string; endedAt: string },
+): Draft {
   const data: Record<string, unknown> = { startedAt: fields.startedAt, endedAt: fields.endedAt }
   if (fields.projectId != null) data.projectId = fields.projectId
   if (fields.title) data.title = fields.title

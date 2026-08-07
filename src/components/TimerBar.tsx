@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
 import { Play, Square } from 'lucide-react'
-import { useStore } from '../lib/store'
-import { durationMs, myRunningEntries, type EntryRecord } from '../lib/reducer'
+import { useEffect, useState } from 'react'
+
 import { editEntry, newEntryId, startEntry, stopEntry } from '../lib/actions'
 import { fmtClock } from '../lib/format'
+import { durationMs, myRunningEntries, type EntryRecord } from '../lib/reducer'
+import { useStore } from '../lib/store'
 import { ProjectPicker } from './ProjectPicker'
 
 export function TimerBar() {
@@ -17,11 +18,16 @@ export function TimerBar() {
       style={{ background: 'var(--panel)', borderWidth: 1, borderColor: 'var(--border)' }}
     >
       {running.map((entry, i) => (
-        <div key={entry.id} style={i > 0 ? { borderTopWidth: 1, borderColor: 'var(--border)' } : undefined}>
+        <div
+          key={entry.id}
+          style={i > 0 ? { borderTopWidth: 1, borderColor: 'var(--border)' } : undefined}
+        >
           <Running entry={entry} />
         </div>
       ))}
-      <div style={running.length > 0 ? { borderTopWidth: 1, borderColor: 'var(--border)' } : undefined}>
+      <div
+        style={running.length > 0 ? { borderTopWidth: 1, borderColor: 'var(--border)' } : undefined}
+      >
         <StartRow autoFocus={running.length === 0} />
       </div>
     </div>
@@ -87,7 +93,10 @@ function Running({ entry }: { entry: EntryRecord }) {
           className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60"
           style={{ background: 'var(--accent)' }}
         />
-        <span className="inline-flex h-2 w-2 rounded-full" style={{ background: 'var(--accent)' }} />
+        <span
+          className="inline-flex h-2 w-2 rounded-full"
+          style={{ background: 'var(--accent)' }}
+        />
       </span>
       <input
         value={title}

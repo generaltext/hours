@@ -1,9 +1,10 @@
 import { NavLink, Route, Routes } from 'react-router-dom'
-import { useStore } from './lib/store'
+
 import { CommandBar } from './components/CommandBar'
-import { TrackView } from './views/TrackView'
-import { ReportsView } from './views/ReportsView'
+import { useStore } from './lib/store'
 import { ProjectsView } from './views/ProjectsView'
+import { ReportsView } from './views/ReportsView'
+import { TrackView } from './views/TrackView'
 
 function Mark() {
   return (
@@ -47,7 +48,7 @@ function Nav() {
           <span className="text-[15px] font-semibold tracking-tight">Hours</span>
           {isDemo && (
             <span
-              className="rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
+              className="rounded px-1.5 py-0.5 text-[10px] font-semibold tracking-wide uppercase"
               style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}
             >
               Demo

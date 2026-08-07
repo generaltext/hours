@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
 import { Check, ChevronDown, Plus, Search } from 'lucide-react'
-import { useStore } from '../lib/store'
-import { projectsList } from '../lib/reducer'
+import { useEffect, useRef, useState } from 'react'
+
 import { createProject, newProjectId } from '../lib/actions'
 import { normalizeProjectName } from '../lib/model'
+import { projectsList } from '../lib/reducer'
+import { useStore } from '../lib/store'
 import { ProjectChip, NoProject, ProjectDot } from './ProjectChip'
 
 export function ProjectPicker({
@@ -72,11 +73,7 @@ export function ProjectPicker({
         className={`inline-flex max-w-full items-center gap-1.5 rounded-md ${pad} transition-colors hover:bg-[var(--hover)]`}
         style={{ borderWidth: 1, borderColor: 'var(--border)', background: 'var(--bg)' }}
       >
-        {current ? (
-          <ProjectChip name={current.name} color={current.color} />
-        ) : (
-          <NoProject />
-        )}
+        {current ? <ProjectChip name={current.name} color={current.color} /> : <NoProject />}
         <ChevronDown size={14} style={{ color: 'var(--muted)' }} />
       </button>
 
@@ -85,7 +82,7 @@ export function ProjectPicker({
           className="absolute left-0 z-40 mt-1 w-72 rounded-lg py-1 shadow-xl"
           style={{ background: 'var(--panel)', borderWidth: 1, borderColor: 'var(--border)' }}
         >
-          <div className="flex items-center gap-2 px-2.5 pb-1.5 pt-1">
+          <div className="flex items-center gap-2 px-2.5 pt-1 pb-1.5">
             <Search size={14} style={{ color: 'var(--muted)' }} />
             <input
               ref={inputRef}

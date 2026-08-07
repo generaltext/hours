@@ -1,11 +1,24 @@
 import { projectColor, projectGroup, projectLeaf } from '../lib/model'
 
-export function ProjectDot({ name, color, size = 8 }: { name: string; color?: string | null; size?: number }) {
+export function ProjectDot({
+  name,
+  color,
+  size = 8,
+}: {
+  name: string
+  color?: string | null
+  size?: number
+}) {
   const c = projectColor(name, color ?? undefined)
   return (
     <span
       className="inline-block shrink-0 rounded-full"
-      style={{ width: size, height: size, background: `var(--dot)`, ['--dot' as string]: dotColor(c) }}
+      style={{
+        width: size,
+        height: size,
+        background: `var(--dot)`,
+        ['--dot' as string]: dotColor(c),
+      }}
     />
   )
 }

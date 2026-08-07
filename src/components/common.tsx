@@ -1,6 +1,7 @@
-import { useEffect, type CSSProperties, type ReactNode } from 'react'
 import type { LucideIcon } from 'lucide-react'
 import { X } from 'lucide-react'
+import { useEffect, type CSSProperties, type ReactNode } from 'react'
+
 import type { Actor } from '../lib/events'
 import { initials } from '../lib/format'
 
@@ -57,7 +58,11 @@ export function Button({
       : variant === 'default'
         ? { borderWidth: 1, borderColor: 'var(--border)', background: 'var(--panel)' }
         : variant === 'danger'
-          ? { borderWidth: 1, borderColor: 'color-mix(in srgb, #e11d48 40%, transparent)', color: '#e11d48' }
+          ? {
+              borderWidth: 1,
+              borderColor: 'color-mix(in srgb, #e11d48 40%, transparent)',
+              color: '#e11d48',
+            }
           : {}
   const hover = variant === 'ghost' ? 'hover:bg-[var(--hover)]' : ''
   return (
@@ -196,17 +201,31 @@ export function Field({ label, children }: { label: string; children: ReactNode 
 
 const inputBase =
   'w-full rounded-md px-2.5 py-1.5 text-sm outline-none transition-colors focus:border-[var(--accent)]'
-const inputStyle: CSSProperties = { borderWidth: 1, borderColor: 'var(--border)', background: 'var(--bg)' }
+const inputStyle: CSSProperties = {
+  borderWidth: 1,
+  borderColor: 'var(--border)',
+  background: 'var(--bg)',
+}
 
 export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   const { className = '', ...rest } = props
-  return <input {...rest} className={`${inputBase} ${className}`} style={{ ...inputStyle, ...props.style }} />
+  return (
+    <input
+      {...rest}
+      className={`${inputBase} ${className}`}
+      style={{ ...inputStyle, ...props.style }}
+    />
+  )
 }
 
 export function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
   const { className = '', children, ...rest } = props
   return (
-    <select {...rest} className={`${inputBase} ${className}`} style={{ ...inputStyle, ...props.style }}>
+    <select
+      {...rest}
+      className={`${inputBase} ${className}`}
+      style={{ ...inputStyle, ...props.style }}
+    >
       {children}
     </select>
   )

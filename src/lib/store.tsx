@@ -7,8 +7,10 @@ import {
   useState,
   type ReactNode,
 } from 'react'
+
+import { loadCache, saveCache } from './cache'
 import { type Actor, type Draft, type HoursEvent, serializeEvent } from './events'
-import { applyEvent, emptyState, type State } from './reducer'
+import { newId, ulid } from './ids'
 import {
   appendLine,
   CONFIG_PATH,
@@ -18,9 +20,8 @@ import {
   PROJECTS_PATH,
   currentShardPath,
 } from './log'
-import { loadCache, saveCache } from './cache'
 import { DEFAULT_CONFIG, type Config } from './model'
-import { newId, ulid } from './ids'
+import { applyEvent, emptyState, type State } from './reducer'
 import { seedDemo } from './seed'
 
 interface StoreValue {

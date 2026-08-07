@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react'
 import { Archive, ArchiveRestore, FolderOpen, Pencil, Plus } from 'lucide-react'
-import { useStore } from '../lib/store'
-import { durationMs, projectsList, type ProjectRecord } from '../lib/reducer'
+import { useMemo, useState } from 'react'
+
+import { Button, EmptyState, Field, IconButton, Modal, TextInput } from '../components/common'
+import { ProjectChip, ProjectDot } from '../components/ProjectChip'
 import {
   archiveProject,
   createProject,
@@ -9,10 +10,10 @@ import {
   restoreProject,
   updateProject,
 } from '../lib/actions'
-import { normalizeProjectName, TAG_PALETTE } from '../lib/model'
 import { fmtDuration } from '../lib/format'
-import { Button, EmptyState, Field, IconButton, Modal, TextInput } from '../components/common'
-import { ProjectChip, ProjectDot } from '../components/ProjectChip'
+import { normalizeProjectName, TAG_PALETTE } from '../lib/model'
+import { durationMs, projectsList, type ProjectRecord } from '../lib/reducer'
+import { useStore } from '../lib/store'
 
 export function ProjectsView() {
   const { state, version, now, dispatch } = useStore()
@@ -170,7 +171,9 @@ function ProjectEditor({ project, onClose }: { project?: ProjectRecord; onClose:
                 onClick={() => setColor(c)}
                 aria-label={c}
                 className="flex h-7 w-7 items-center justify-center rounded-full transition-transform hover:scale-110"
-                style={color === c ? { outline: '2px solid var(--accent)', outlineOffset: 2 } : undefined}
+                style={
+                  color === c ? { outline: '2px solid var(--accent)', outlineOffset: 2 } : undefined
+                }
               >
                 <ProjectDot name={c} color={c} size={18} />
               </button>

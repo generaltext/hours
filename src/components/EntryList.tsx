@@ -1,6 +1,6 @@
-import { useStore } from '../lib/store'
-import { durationMs, type EntryRecord } from '../lib/reducer'
 import { dayKey, fmtDayHeading, fmtDuration } from '../lib/format'
+import { durationMs, type EntryRecord } from '../lib/reducer'
+import { useStore } from '../lib/store'
 import { EntryRow } from './EntryRow'
 
 interface DayGroup {
@@ -42,7 +42,10 @@ export function EntryList({
         <section key={g.key}>
           <div className="mb-1 flex items-baseline justify-between px-3">
             <h3 className="text-sm font-semibold">{fmtDayHeading(g.key)}</h3>
-            <span className="tnum text-xs font-medium tabular-nums" style={{ color: 'var(--muted)' }}>
+            <span
+              className="tnum text-xs font-medium tabular-nums"
+              style={{ color: 'var(--muted)' }}
+            >
               {fmtDuration(g.total)}
             </span>
           </div>
